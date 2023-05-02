@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+
 fn main() {
     let number = 3;
     //`if number {}` will give an error, as number is not boolean

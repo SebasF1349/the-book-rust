@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+
 //STATEMENTS are instructions that perform some action and do not return a value
 //EXPRESSIONS evaluate to a resulting value
 //EXPRESSIONS do not include ending semicolons, adding a semicolon turns it into a statement (no there is no resulting value!)
