@@ -6,6 +6,8 @@ mod module_in_folder;
 mod module_with;
 
 use module_with::submodule;
+// "import" with an alias, although it not recommended to import the fn as then it will be harder to understand where is the fn when used
+use module_with::submodule::call_mod as called_mod;
 
 fn main() {
     // crate: the smallest amount of code that the Rust compiler considers at a time
