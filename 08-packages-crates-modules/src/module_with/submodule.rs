@@ -1,3 +1,7 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(path_statements)]
+
 pub fn pr() {
     println!("submodule!");
 }
@@ -13,14 +17,14 @@ mod another_submodule {
     }
 
     // we can create public structs with just a few public keys, but enums are always full pub or not
-    pub struct public_struct {
+    pub struct PublicStruct {
         pub public_key: String,
         private_key: i32,
     }
     // if we don't implement a way to create a new public_struct, then we won't be able to as private_key is private and can't be accessed or asigned
-    impl public_struct {
-        pub fn add(public: &str) -> public_struct {
-            public_struct {
+    impl PublicStruct {
+        pub fn add(public: &str) -> PublicStruct {
+            PublicStruct {
                 public_key: String::from(public),
                 private_key: 1,
             }
