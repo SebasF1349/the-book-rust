@@ -22,7 +22,8 @@ pub fn strings() {
     let s1 = String::from("Hello, ");
     let s2 = String::from("world!");
     let s3 = s1 + &s2; //s1 has to be moved
-    let s3 = format!("{}{}", s1, s2); //the same as before, but easier for a more complicated string combination - it also uses only references, so this call doesn't take ownersship to any of its parameters
+    let s1_bis = String::from("Hello, ");
+    let s3 = format!("{}{}", s1_bis, s2); //the same as before, but easier for a more complicated string combination - it also uses only references, so this call doesn't take ownersship to any of its parameters
 
     // Rust doesn't allow for using indexes in strings (`let h = s1[0]` will panic); that's because a string is a Vec<u8> and some chars can take 1 byte long, but others 2 bytes (for example, cyrillic), so taking one byte of a two bytes character wouldn't return the char but "half of it" (or half of its scalar value)
 
