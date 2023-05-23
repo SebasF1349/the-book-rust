@@ -37,14 +37,25 @@ fn main() {
     //arrays items must have the same type and it has a fixed length
     //"Arrays are useful when you want your data allocated on the stack rather than the heap"
     let array = [1, 2, 3, 4, 5];
-    let months = ["January", "February", "March", "April", "May", "June", "July",
-              "August", "September", "October", "November", "December"];
+    let months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
     let array: [i32; 5]; //array without values but with a 5 lenght
     let array = [3; 5]; //[3, 3, 3, 3, 3]
     let first = array[0];
     let second = array[1];
     //accessing an invalid array element cause a panic ON RUNTIME
-
 
     //for collections with a variable length you should use vectors instead
 }

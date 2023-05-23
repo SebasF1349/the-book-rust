@@ -6,7 +6,7 @@ fn main() {
         active: bool,
         username: String,
         email: String,
-        sign_in_count: u64
+        sign_in_count: u64,
     }
 
     let mut user1 = User {
@@ -56,7 +56,10 @@ fn main() {
     // let's create a program that calculates the area of a rectangle
     let width1 = 30;
     let height1 = 50;
-    println!("The area of the rectangle is {} square pixels.", area_variables(width1, height1));
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        area_variables(width1, height1)
+    );
     fn area_variables(width: u32, height: u32) -> u32 {
         width * height
     }
@@ -69,8 +72,11 @@ fn main() {
         width: 30,
         height: 50,
     };
-    println!("The area of the rectangle is {} square pixels.", area_struct(&rect1));
-    fn area_struct (rectangle: &Rectangle) -> u32 {
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        area_struct(&rect1)
+    );
+    fn area_struct(rectangle: &Rectangle) -> u32 {
         rectangle.width * rectangle.height
     }
     // as the area fn is closely related to the struct, makes sense to add it as a method
@@ -87,7 +93,10 @@ fn main() {
         width: 30,
         height: 50,
     };
-    println!("The area of the rectangle is {} square pixels.", rect2.area());
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect2.area()
+    );
     // let's create a new method to find out if a rectangle fits into another one
     impl RectangleTwo {
         fn can_hold(&self, other: &Rectangle) -> bool {
@@ -97,11 +106,14 @@ fn main() {
     // if the implemented fn doesn't have self as their first parameter, then it's not a method but an associated function, for example a constructor:
     impl RectangleTwo {
         fn square(size: u32) -> Self {
-            Self { width: size, height: size }
+            Self {
+                width: size,
+                height: size,
+            }
         }
     }
     let sq = RectangleTwo::square(3); //associated fn are called with :: (as String::from() which is an associated fn!)
-    // in fact, doing `rect2.area()` as before is syntactic Sugar for `RectangleTwo::area(&rect2)`
+                                      // in fact, doing `rect2.area()` as before is syntactic Sugar for `RectangleTwo::area(&rect2)`
 
     // to print a struct we need to manually add the Debug attribute
     #[derive(Debug)]
@@ -114,5 +126,4 @@ fn main() {
         height: 50,
     };
     println!("rect1 is {:?}", rect2); //using {:#?} will make an even prettier print for langer structs
-
 }

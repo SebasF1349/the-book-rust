@@ -4,7 +4,7 @@
 fn main() {
     enum Message {
         Quit,
-        Move {x: i32, y: i32},
+        Move { x: i32, y: i32 },
         Write(String),
         ChangeColor(i32, i32, i32),
     }
@@ -26,7 +26,7 @@ fn main() {
     let some_number = Some(5);
     let some_char = Some('e');
     let absent_number: Option<i32> = None; //type must be explicit if we only define None
-    // Option help catching one of the most common issues with null: assuming that something isn't null when it actually is
+                                           // Option help catching one of the most common issues with null: assuming that something isn't null when it actually is
 
     enum Coin {
         Penny,
@@ -66,7 +66,7 @@ fn main() {
             CoinForStates::Quarter(state) => {
                 println!("State quarter from {:?}", state);
                 25
-            },
+            }
         }
     }
 
@@ -82,9 +82,9 @@ fn main() {
 
     // match must cover all possibilities or will get a compile error
     // how to catch all other posibilities in a match:
-        // other => function(other),
-        // _ => function(),
-        // _ => (),
+    // other => function(other),
+    // _ => function(),
+    // _ => (),
 
     let config_max = Some(3u8);
     if let Some(max) = config_max {

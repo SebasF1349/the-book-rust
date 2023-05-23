@@ -11,7 +11,7 @@ fn main() {
     let hello: &str = &s[0..5]; //a string slice (a reference to part of the `s`); as it's a reference not `s` lost write and own permissions
     let world = &s[6..11];
     let s2: &String = &s; //a reference to the whole `s`
-    // slices are "fat" pointers or pointers with metadata (the length of the slice)
+                          // slices are "fat" pointers or pointers with metadata (the length of the slice)
 
     fn first_word(s: &String) -> &str {
         let bytes = s.as_bytes();
