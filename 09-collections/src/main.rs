@@ -1,8 +1,14 @@
-mod vectors;
-mod strings;
-mod hash_maps;
+#![allow(dead_code)]
+#![allow(unused_variables)]
 
-use std::{collections::HashMap, io};
+mod hash_maps;
+mod strings;
+mod vectors;
+
+use std::{
+    collections::{hash_map, HashMap},
+    io,
+};
 
 fn main() {
     // teoria en los modulos
@@ -10,7 +16,11 @@ fn main() {
     // 1. Given a list of integers, use a vector and return the median (when sorted, the value in the middle position) and mode (the value that occurs most often; a hash map will be helpful here) of the list.
     let mut nums = vec![4, 3, 2, 5, 4, 4, 2, 2, 7, 5, 4];
     nums.sort();
-    let length = if nums.len() % 2 == 0 {nums.len() / 2} else {(nums.len() + 1) / 2};
+    let length = if nums.len() % 2 == 0 {
+        nums.len() / 2
+    } else {
+        (nums.len() + 1) / 2
+    };
     let median = nums[length];
     let mut counter = HashMap::new();
     let mut max_quantity = 0;
@@ -22,17 +32,19 @@ fn main() {
             max_number = num;
         }
     }
-    println!("La mediana de los número es {} y la moda es {}", median, max_number);
+    println!(
+        "La mediana de los número es {} y la moda es {}",
+        median, max_number
+    );
 
     // 2. Convert strings to pig latin. The first consonant of each word is moved to the end of the word and “ay” is added, so “first” becomes “irst-fay.” Words that start with a vowel have “hay” added to the end instead (“apple” becomes “apple-hay”). Keep in mind the details about UTF-8 encoding!
     let text = String::from("first");
-    let pig_latin: String;
     let vowels = vec!['a', 'e', 'i', 'o', 'u'];
-    if !vowels.contains(&text.chars().nth(0).unwrap()) {
-        pig_latin = format!("{}-{}ay", &text[1..], text.chars().nth(0).unwrap());
+    let pig_latin = if !vowels.contains(&text.chars().next().unwrap()) {
+        format!("{}-{}ay", &text[1..], text.chars().next().unwrap())
     } else {
-        pig_latin = format!("{}-hay", &text);
-    }
+        format!("{}-hay", &text)
+    };
     println!("{}", pig_latin);
 
     // 3. Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company. For example, “Add Sally to Engineering” or “Add Amir to Sales.” Then let the user retrieve a list of all people in a department or all people in the company by department, sorted alphabetically.
@@ -42,25 +54,25 @@ fn main() {
         let mut input = String::new();
         match io::stdin().read_line(&mut input) {
             Ok(_) => {
-                let input = input.trim().clone();
+                let input = input.trim();
                 if input == "n" {
                     break;
                 }
                 match &input.find("to") {
                     Some(pos) => {
-                        let name = String::from(&input[4..pos-1]);
-                        let departament = String::from(&input[pos+3..]);
-                        if data.contains_key(&departament) {
-                            data.get_mut(&departament).unwrap().push(name);
+                        let name = String::from(&input[4..pos - 1]);
+                        let departament = String::from(&input[pos + 3..]);
+                        if let hash_map::Entry::Vacant(e) = data.entry(departament.clone()) {
+                            e.insert(vec![name]);
                         } else {
                             data.insert(departament, vec![name]);
                         }
-                    },
+                    }
                     _ => {
                         println!("Formato incorrecto.");
                     }
                 }
-            },
+            }
             Err(error) => println!("Error: {}", error),
         };
     }
@@ -68,7 +80,7 @@ fn main() {
     let mut input = String::new();
     match io::stdin().read_line(&mut input) {
         Ok(_) => {
-            let input_trimmed = input.trim().clone();
+            let input_trimmed = input.trim();
             if data.contains_key(input_trimmed) {
                 for name in data.get(input_trimmed).unwrap() {
                     println!("{}", name);
@@ -81,7 +93,7 @@ fn main() {
                     }
                 }
             }
-        },
+        }
         Err(error) => println!("Error: {}", error),
     }
 }
