@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
-
 pub fn hash_maps() {
     use std::collections::HashMap;
     let mut scores = HashMap::new();
@@ -18,16 +17,16 @@ pub fn hash_maps() {
     }
 
     // updating a hash map:
-        // saving a value and overwriting if there is an old value
-        scores.insert(String::from("Blue"), 25);
-        // only save a new value if the key doesn't exists
-        scores.entry(String::from("Blue")).or_insert(25);
-        // updating a value based on the old value
-        // example: counting repeated words in a string
-        let text = "hello world wonderful world";
-        let mut map = HashMap::new();
-        for word in text.split_whitespace() {
-            let count = map.entry(word).or_insert(0);
-            *count += 1;
-        }
+    // saving a value and overwriting if there is an old value
+    scores.insert(String::from("Blue"), 25);
+    // only save a new value if the key doesn't exists
+    scores.entry(String::from("Blue")).or_insert(25);
+    // updating a value based on the old value
+    // example: counting repeated words in a string
+    let text = "hello world wonderful world";
+    let mut map = HashMap::new();
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
 }
