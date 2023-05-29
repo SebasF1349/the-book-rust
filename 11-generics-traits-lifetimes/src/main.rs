@@ -2,6 +2,7 @@
 #![allow(unused_variables)]
 
 mod generics;
+mod traits;
 
 use generics::generics;
 
