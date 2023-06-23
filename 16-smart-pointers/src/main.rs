@@ -85,4 +85,59 @@ fn main() {
     let b = ListRc::Cons(3, Rc::clone(&a));
     let c = ListRc::Cons(4, Rc::clone(&a));
     // so now Rc<ListRc> saves the count of 3 references, we can use `Rc::strong_count(&a)` to get the number of references
+
+    // interior mutability is a design pattern in Rust that allows you to mutate data even when there are immutable references to that data, which is normally disallowed by the bottoring rules
+    // to mutate data the pattern uses `unsafe` code inside a data structure
+    // we can only use this pattern when we can ensure that the borrowing rules will be followed at runtime, even though the compiler can't guarantee that
+    // the `unsafe code involved is then weapped in a safe API, and the outer type is still immutable
+
+    // the `RefCell<T>` type follows the interior mutability pattern
+    // unlike `Rc<T>`, the `RefCell<T>` type represents single ownership over the data it holds
+    // with `RefCell<T>` the borrowing rules' invariants are enforced at runtime instead of at compile time
+    // this type is useful when you are sure the code follows the borrowing rules but the compiler is unable to understand and guarantee that
+    // as `Rc<T>`, this type is only for use in single-threaded scenarios
+
+    // reasons to choose Box, Rc or RefCell:
+    /* - Rc<T> enables multiple owners of the same data; Box<T> and RefCell<T> have single owners.
+    - Box<T> allows immutable or mutable borrows checked at compile time; Rc<T> allows only immutable borrows checked at compile time; RefCell<T> allows immutable or mutable borrows checked at runtime.
+    - Because RefCell<T> allows mutable borrows checked at runtime, you can mutate the value inside the RefCell<T> even when the RefCell<T> is immutable. (mutability pattern) */
+
+    // a common way to use `RefCell<T>` is in combination with `Rc<T>` to get a value that can have multiple owners and that can be mutated
+
+    #[derive(Debug)]
+    enum ListMut {
+        Cons(Rc<RefCell<i32>>, Rc<ListMut>),
+        Nil,
+    }
+    use std::cell::RefCell;
+    let value = Rc::new(RefCell::new(5));
+    let a = Rc::new(ListMut::Cons(Rc::clone(&value), Rc::new(ListMut::Nil)));
+    let b = ListMut::Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
+    let c = ListMut::Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
+    *value.borrow_mut() += 10;
+
+    // you can create a memory leak by using `Rc<T>`and `RefCell<T>` creating references where items refer to each other in a cycle as then the `strong_count` of the Rc will never be 0
+    // to avoid memory leaks, you call `Rc::downgrade` and get a smart pointer of type `Weak<T>`
+    // weak references don't express an ownership relationship and their count doesn't affect when an `Rc<T>` instance is cleaned up and its count doesn't need to be 0 for the `Rc<T>` instance to be cleaned up
+
+    use std::rc::Weak;
+    #[derive(Debug)]
+    struct Node {
+        value: i32,
+        parent: RefCell<Weak<Node>>,
+        children: RefCell<Vec<Rc<Node>>>,
+    }
+    let leaf = Rc::new(Node {
+        value: 3,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![]),
+    });
+    //assert_eq!(leaf.parent.borrow().upgrade(), None);
+    let branch = Rc::new(Node {
+        value: 5,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![Rc::clone(&leaf)]),
+    });
+    *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
+    //assert_eq!(leaf.parent.borrow().upgrade(), Some(Node { value: 5, parent: RefCell { value: (Weak) }, children: RefCell { value: [Node { value: 3, parent: RefCell { value: (Weak) }, children: RefCell { value: [] } }] } }));
 }
